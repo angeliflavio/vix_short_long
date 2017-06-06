@@ -1,2 +1,3 @@
-# vix_short_long
-Volatility Index VIX short and medium term analysis.
+# Volatility Index Analysis
+
+Volatility Index VIX short and medium term analysis using R.
