@@ -1,15 +1,16 @@
 library(Quandl)
+library(ggplot2)
 #download data and transform into time series
 vix_m=Quandl('CBOE/VXMT')
 vix_m=as.xts(vix_m$Close,order.by = vix_m$Date)
 vix_s=Quandl('CBOE/VXST')
 vix_s=as.xts(vix_s$Close,order.by = vix_s$Date)
-spy=getSymbols('SPY')
-spy=SPY$SPY.Close
+spx<-Quandl("CHRIS/CME_SP1")
+spx<-as.xts(spx$Last, order.by = spx$Date)
 
 
 #merge data, find diff and neg factor
-data=merge.xts(spy,vix_s,join = 'inner')
+data=merge.xts(spx,vix_s,join = 'inner')
 data=merge.xts(data,vix_m,join = 'inner')
 data$diffvix=data$vix_m-data$vix_s
 data$neg=ifelse(data$diffvix<0,1,0)
@@ -18,7 +19,7 @@ View(data)
 
 #single plot
 ggplot(data=data,aes(x=index(data)))+
-  geom_line(data = data,aes(y=indice/2,colour=neg))+
+  geom_line(data = data,aes(y=indice/20,colour=neg))+
   geom_line(data = data,aes(y=short),color='red')+
   geom_line(data = data,aes(y=medium),color='blue')
 
